@@ -36,6 +36,18 @@ func (b Box) Draw() {
 	}
 }
 
+type Cell struct {
+	Rune       rune
+	Foreground termbox.Attribute
+	Background termbox.Attribute
+	X          int
+	Y          int
+}
+
+func (c Cell) Draw() {
+	termbox.SetCell(c.X, c.Y, c.Rune, c.Foreground, c.Background)
+}
+
 func main() {
 	err := termbox.Init()
 	if err != nil {
@@ -43,8 +55,8 @@ func main() {
 	}
 	defer termbox.Close()
 
-	boxes := []Box{
-		{
+	boxes := []Drawable{
+		Box{
 			Lines:      []string{"", "  #394650"},
 			Background: termbox.ColorRed,
 			Foreground: termbox.ColorBlack,
@@ -53,62 +65,54 @@ func main() {
 			X:          1,
 			Y:          1,
 		},
-		{
-			Lines:      []string{"▶︎"},
+		Cell{
+			Rune:       '▶',
 			Foreground: termbox.ColorRed,
-			Width:      1,
-			Height:     1,
 			X:          17,
 			Y:          3,
 		},
-		{
+		Box{
 			Lines:      []string{"", "  #394649", "  889 txs", "  927Kb"},
-			Background: termbox.ColorYellow,
+			Background: termbox.ColorBlue,
 			Foreground: termbox.ColorBlack,
 			Width:      15,
 			Height:     5,
 			X:          19,
 			Y:          1,
 		},
-		{
-			Lines:      []string{"▶︎"},
-			Foreground: termbox.ColorYellow,
-			Width:      1,
-			Height:     1,
+		Cell{
+			Rune:       '▶',
+			Foreground: termbox.ColorBlue,
 			X:          35,
 			Y:          3,
 		},
-		{
+		Box{
 			Lines:      []string{"", "  #394648", "  2 txs", "  0.5Kb"},
-			Background: termbox.ColorYellow,
+			Background: termbox.ColorBlue,
 			Foreground: termbox.ColorBlack,
 			Width:      15,
 			Height:     5,
 			X:          37,
 			Y:          1,
 		},
-		{
-			Lines:      []string{"▶︎"},
-			Foreground: termbox.ColorYellow,
-			Width:      1,
-			Height:     1,
+		Cell{
+			Rune:       '▶',
+			Foreground: termbox.ColorBlue,
 			X:          53,
 			Y:          3,
 		},
-		{
+		Box{
 			Lines:      []string{"", "  #394647", "  976 txs", "  966Kb"},
-			Background: termbox.ColorYellow,
+			Background: termbox.ColorBlue,
 			Foreground: termbox.ColorBlack,
 			Width:      15,
 			Height:     5,
 			X:          55,
 			Y:          1,
 		},
-		{
-			Lines:      []string{"▼"},
-			Foreground: termbox.ColorYellow,
-			Width:      1,
-			Height:     1,
+		Cell{
+			Rune:       '▼',
+			Foreground: termbox.ColorBlue,
 			X:          62,
 			Y:          7,
 		},
