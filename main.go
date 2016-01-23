@@ -33,7 +33,16 @@ func main() {
 		os.Exit(1)
 	}
 
-	b, err := api.GetBlock(block)
-	fmt.Printf("block: %#v\n", b)
-	fmt.Printf("err: %#v\n", err)
+	if block != "" {
+		// listTransactions(block)
+		b, err := api.GetBlock(block)
+		fmt.Printf("block: %#v\n", b)
+		fmt.Printf("err: %s\n", err)
+	}
+
+	if transaction != "" {
+		tx, err := api.GetTx(transaction)
+		fmt.Printf("tx: %#v\n", tx)
+		fmt.Printf("err: %s\n", err)
+	}
 }
