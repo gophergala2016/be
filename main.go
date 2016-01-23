@@ -2,7 +2,10 @@ package main
 
 import (
 	"flag"
+	"fmt"
 	"os"
+
+	api "github.com/gophergala2016/be/insightapi"
 )
 
 func main() {
@@ -22,4 +25,8 @@ func main() {
 		flag.PrintDefaults()
 		os.Exit(1)
 	}
+
+	b, err := api.GetBlock(block)
+	fmt.Printf("block: %#v\n", b)
+	fmt.Printf("err: %#v\n", err)
 }
