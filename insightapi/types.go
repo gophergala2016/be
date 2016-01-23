@@ -13,7 +13,7 @@ type Block struct {
 	Time          int
 	Nonce         int
 	Bits          string
-	Difficulty    int
+	Difficulty    float64
 	Chainwork     string
 	Nextblockhash string
 	IsMainChain   bool
