@@ -8,6 +8,13 @@ import (
 	api "github.com/gophergala2016/be/insightapi"
 )
 
+func listTransactions(blockHash string) {
+	b, _ := api.GetBlock(blockHash)
+	for _, tx := range b.Tx {
+		fmt.Println(tx)
+	}
+}
+
 func main() {
 
 	var (
