@@ -17,6 +17,7 @@ type Block struct {
 	Chainwork     string
 	Nextblockhash string
 	IsMainChain   bool
+	Reward        float32
 	PoolInfo      PoolInfo
 }
 
@@ -39,9 +40,9 @@ type Tx struct {
 	Locktime int
 	Vin      []Input
 	Vout     []Output
-	ValueOut float32
 	Size     int
 	ValueIn  float32
+	ValueOut float32
 	Fees     float32
 }
 
