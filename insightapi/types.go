@@ -1,11 +1,6 @@
-package insight
+package insightapi
 
 // Go implementation of the Insight API https://insight.is
-
-var (
-	ApiUrl    = "https://insight.bitpay.com/api"
-	UserAgent = "be"
-)
 
 type Block struct {
 	Hash          string   `json:"hash"`
