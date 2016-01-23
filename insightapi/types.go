@@ -35,7 +35,6 @@ type Tx struct {
 type Input struct {
 	Txid             string
 	Vout             int
-	ScriptSig        []string
 	Sequence         int
 	N                int
 	Addr             string
