@@ -6,8 +6,13 @@ import (
 	"net/http"
 )
 
+var (
+	ApiURL    = "https://insight.bitpay.com/api"
+	UserAgent = "be"
+)
+
 func GetBlock(blockHash string) (block Block, err error) {
-	url := "https://insight.bitpay.com/api/block/" + blockHash
+	url := ApiURL + "/block/" + blockHash
 
 	resp, err := http.Get(url)
 	if err != nil {
@@ -24,7 +29,7 @@ func GetBlock(blockHash string) (block Block, err error) {
 }
 
 func GetTx(txId string) (tx Tx, err error) {
-	url := "https://insight.bitpay.com/api/tx/" + txId
+	url := ApiURL + "/tx/" + txId
 
 	resp, err := http.Get(url)
 	if err != nil {
@@ -41,7 +46,7 @@ func GetTx(txId string) (tx Tx, err error) {
 }
 
 func GetAddr(addrStr string) (addr Addr, err error) {
-	url := "https://insight.bitpay.com/api/addr/" + addrStr
+	url := ApiURL + "/addr/" + addrStr
 
 	resp, err := http.Get(url)
 	if err != nil {
