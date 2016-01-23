@@ -39,3 +39,20 @@ func GetTx(txId string) (tx Tx, err error) {
 	err = json.Unmarshal(bytes, &tx)
 	return
 }
+
+func GetAddr(addrStr string) (addr Addr, err error) {
+	url := "https://insight.bitpay.com/api/addr/" + addrStr
+
+	resp, err := http.Get(url)
+	if err != nil {
+		return
+	}
+
+	bytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return
+	}
+
+	err = json.Unmarshal(bytes, &addr)
+	return
+}

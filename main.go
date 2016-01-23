@@ -45,4 +45,10 @@ func main() {
 		fmt.Printf("tx: %#v\n", tx)
 		fmt.Printf("err: %s\n", err)
 	}
+
+	if address != "" {
+		addr, err := api.GetAddr(address)
+		fmt.Printf("tx: %#v\n", addr)
+		fmt.Printf("err: %s\n", err)
+	}
 }
