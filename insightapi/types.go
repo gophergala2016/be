@@ -17,6 +17,7 @@ type Block struct {
 	Chainwork     string
 	Nextblockhash string
 	IsMainChain   bool
+	PoolInfo      PoolInfo
 }
 
 type Tx struct {
@@ -73,4 +74,9 @@ type Addr struct {
 	UnconfirmedTxApperances int
 	TxApperances            int
 	Transactions            []string
+}
+
+type PoolInfo struct {
+	PoolName string
+	Url      string
 }
