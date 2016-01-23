@@ -2,21 +2,26 @@ package insight
 
 // Go implementation of the Insight API https://insight.is
 
+var (
+	ApiUrl    = "https://insight.bitpay.com/api"
+	UserAgent = "be"
+)
+
 type Block struct {
-	Hash          string `json:"hash"`
-	Confirmations int    `json:"confirmations"`
-	Size          int    `json:"size"`
-	Height        int    `json:"height"`
-	Version       int    `json:"version"`
-	Merkleroot    string `json:"merkleroot"`
-	Tx            []Tx   `json:"tx:omitempty"`
-	Time          int    `json:"time"`
-	Nonce         int    `json:"nonce"`
-	Bits          string `json:"bits"`
-	Difficulty    int    `json:"difficulty"`
-	Chainwork     string `json:"chainwork"`
-	Nextblockhash string `json:"nextblockhash"`
-	IsMainChain   bool   `json:"isMainChain"`
+	Hash          string   `json:"hash"`
+	Confirmations int      `json:"confirmations"`
+	Size          int      `json:"size"`
+	Height        int      `json:"height"`
+	Version       int      `json:"version"`
+	Merkleroot    string   `json:"merkleroot"`
+	Tx            []string `json:"tx:omitempty"`
+	Time          int      `json:"time"`
+	Nonce         int      `json:"nonce"`
+	Bits          string   `json:"bits"`
+	Difficulty    int      `json:"difficulty"`
+	Chainwork     string   `json:"chainwork"`
+	Nextblockhash string   `json:"nextblockhash"`
+	IsMainChain   bool     `json:"isMainChain"`
 }
 
 type Tx struct {
