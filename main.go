@@ -22,19 +22,27 @@ func main() {
 		transaction string
 		address     string
 		apiURL      string
+		help        bool
 	)
 
 	flag.StringVar(&block, "b", "", "Inspect Block")
 	flag.StringVar(&transaction, "t", "", "Inspect Inputs and Outputs of a Transaction")
 	flag.StringVar(&address, "a", "", "Get Address info")
 	flag.StringVar(&apiURL, "u", api.ApiURL, "API URL")
+	flag.BoolVar(&help, "h", false, "Print Help")
 	flag.Parse()
 
 	api.ApiURL = apiURL
 
-	if block == "" && transaction == "" && address == "" {
+	if help {
 		flag.PrintDefaults()
-		os.Exit(1)
+		os.Exit(0)
+	}
+
+	if block == "" && transaction == "" && address == "" {
+		l, err := api.GetLatestBlocks()
+		fmt.Printf("latestblocks: %#v\n", l)
+		fmt.Printf("err: %s\n", err)
 	}
 
 	if block != "" {

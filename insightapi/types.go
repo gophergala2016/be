@@ -20,6 +20,19 @@ type Block struct {
 	PoolInfo      PoolInfo
 }
 
+type BlockList struct {
+	Blocks []BlockInfo
+}
+
+type BlockInfo struct {
+	Height   int
+	Size     int
+	Hash     string
+	Time     string
+	Txlength int
+	PoolInfo PoolInfo
+}
+
 type Tx struct {
 	Txid     string
 	Version  int

@@ -11,6 +11,23 @@ var (
 	UserAgent = "be"
 )
 
+func GetLatestBlocks() (blocklist BlockList, err error) {
+	url := ApiURL + "/blocks"
+
+	resp, err := http.Get(url)
+	if err != nil {
+		return
+	}
+
+	bytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return
+	}
+
+	err = json.Unmarshal(bytes, &blocklist)
+	return
+}
+
 func GetBlock(blockHash string) (block Block, err error) {
 	url := ApiURL + "/block/" + blockHash
 
