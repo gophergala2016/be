@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
+	"log"
 	"os"
 
 	api "github.com/gophergala2016/be/insightapi"
@@ -40,9 +41,13 @@ func main() {
 	}
 
 	if block == "" && transaction == "" && address == "" {
-		l, err := api.GetLatestBlocks()
-		fmt.Printf("latestblocks: %#v\n", l)
-		fmt.Printf("err: %s\n", err)
+		latestBlocks, err := api.GetLatestBlocks()
+		if err != nil {
+			log.Fatal(err)
+		}
+		for _, b := range latestBlocks.Blocks[0:20] {
+			fmt.Println(b.Height, b.Hash, b.Time, b.Txlength, b.PoolInfo.PoolName, b.Size)
+		}
 	}
 
 	if block != "" {

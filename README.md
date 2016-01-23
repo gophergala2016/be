@@ -4,6 +4,12 @@
 
 ## Examples
 
+Watch Latest Blocks Mined
+
+```
+be
+```
+
 Get Address info
 
 ```
