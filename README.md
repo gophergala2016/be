@@ -1,8 +1,6 @@
 # be (blockchain explorer)
 
-A Bitcoin Blockchain explorer for the terminal.
-
-**be** uses the [Insight API](https://insight.is/) to get data from the Blockchain. By default it uses the Insight Live URL but in case you're run ning your own node, the URL can be defined by `-u <url>`
+**be** is a Bitcoin Blockchain explorer for the terminal that uses the [Insight API](https://insight.is/) to get data from the Blockchain. By default it uses the Insight Live URL but in case you're running your own node, the URL can be defined by `-u <url>`
 
 ## Examples
 
