@@ -63,12 +63,12 @@ type ScriptPubKey struct {
 type Addr struct {
 	AddrStr                 string
 	Balance                 float32
-	BalanceSat              float32
+	BalanceSat              int
 	TotalReceived           float32
-	TotalReceivedSat        float32
+	TotalReceivedSat        int
 	TotalSent               float32
-	TotalSentSat            float32
-	UnconfirmedBalance      int
+	TotalSentSat            int
+	UnconfirmedBalance      float32
 	UnconfirmedBalanceSat   int
 	UnconfirmedTxApperances int
 	TxApperances            int
