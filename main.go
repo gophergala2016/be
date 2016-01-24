@@ -30,6 +30,7 @@ func main() {
 	flag.Parse()
 
 	api.ApiURL = apiURL
+	api.UserAgent = "be"
 
 	if help {
 		flag.PrintDefaults()
