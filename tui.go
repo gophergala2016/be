@@ -234,15 +234,21 @@ func tuiPoll() {
 				move(-1)
 			case termbox.KeyArrowUp:
 				move(-1)
+			case termbox.KeyPgup:
+				move(-1)
 			case termbox.KeyArrowRight:
 				move(1)
 			case termbox.KeyArrowDown:
 				move(1)
+			case termbox.KeyPgdn:
+				move(1)
 			case termbox.KeyEnter:
 				return
 			default:
-				termbox.Close()
-				os.Exit(0)
+				if e.Ch == 'q' {
+					termbox.Close()
+					os.Exit(0)
+				}
 			}
 		}
 
