@@ -149,3 +149,13 @@ Transactions:
 bbd5909dd1bbd4494d89aa82f5799a85ea5704634c001fa7516bf9b04b44a117
 93d23a3b566fa81f59ccdb5d28068ec6a40a81a48fae7235997e9e58f574e00d
 ```
+
+## TODO
+
+- [x] CLI mode for `-b`, `-t` and `-a`
+- [x] Parametrize API URL with `--api-url`
+- [x] TUI mode for Last Blocks
+- [ ] TUI mode for `-b`
+- [ ] TUI mode for `-t`
+- [ ] TUI mode for `-a`
+- [ ] Follow mode for CLI `-f [blocks|transactions]`
