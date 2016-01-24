@@ -14,12 +14,12 @@ var (
 )
 
 const (
-	boxWidth  = 15
-	boxHeight = 5
+	boxWidth  = 19
+	boxHeight = 7
 	xMargin   = 2
 	yMargin   = 1
-	xSpace    = 2
-	ySpace    = 1
+	xSpace    = 4
+	ySpace    = 2
 )
 
 func tuiLatestBlocks() {
@@ -48,6 +48,36 @@ func box(lines []string, x, y int, background termbox.Attribute) tui.Box {
 	}
 }
 
+func horizontalLine(x, y int) tui.Box {
+	line := ""
+	for i := 0; i < xSpace; i++ {
+		line = line + "─"
+	}
+
+	return tui.Box{
+		Lines: []string{line},
+		X:     xMargin + boxWidth + (xSpace+boxWidth)*x,
+		Y:     yMargin + boxHeight/2 + (ySpace+boxHeight)*y,
+		Width: xSpace, Height: 1,
+		Foreground: termbox.ColorWhite,
+	}
+}
+
+func verticalLine(x, y int) tui.Box {
+	lines := []string{}
+	for i := 0; i < ySpace; i++ {
+		lines = append(lines, "│")
+	}
+
+	return tui.Box{
+		Lines: lines,
+		X:     xMargin + boxWidth/2 + (xSpace+boxWidth)*x,
+		Y:     yMargin + boxHeight + (ySpace+boxHeight)*y,
+		Width: 1, Height: ySpace,
+		Foreground: termbox.ColorWhite,
+	}
+}
+
 func calculateFit(pad, space, boxSize, containerSize int) (boxes int) {
 	for {
 		if pad+boxSize*(boxes+1)+space*boxes+pad > containerSize {
@@ -58,27 +88,60 @@ func calculateFit(pad, space, boxSize, containerSize int) (boxes int) {
 	}
 }
 
-func blockBox(block api.BlockInfo, i int) tui.Box {
+func blockBox(block api.BlockInfo, i int) tui.Group {
 	containerWidth, _ := termbox.Size()
 
 	xBoxes := calculateFit(xMargin, xSpace, boxWidth, containerWidth)
 
-	return box(
+	y := i / xBoxes
+
+	var x int
+
+	if y%2 == 0 {
+		x = i % xBoxes
+	} else {
+		x = xBoxes - 1 - (i % xBoxes)
+	}
+
+	box := box(
 		[]string{
 			"",
 			"  #" + strconv.Itoa(block.Height),
+			"",
 			"  " + strconv.Itoa(block.Txlength) + "txs",
 			"  " + strconv.Itoa(block.Size/1024) + "kb",
+			"  " + block.PoolInfo.PoolName,
 		},
-		i%xBoxes, i/xBoxes, termbox.ColorBlue,
+		x, y, termbox.ColorBlue,
 	)
+
+	var line tui.Drawable
+
+	if y%2 == 0 {
+		if x == 0 {
+			line = verticalLine(x, y-1)
+		} else {
+			line = horizontalLine(x-1, y)
+		}
+	} else {
+		if x == xBoxes-1 {
+			line = verticalLine(x, y-1)
+		} else {
+			line = horizontalLine(x, y)
+		}
+	}
+
+	return tui.Group{box, line}
 }
 
-func unconfirmedBlockBox(block api.BlockInfo) tui.Box {
+func nextBlockBox(block api.BlockInfo) tui.Box {
 	return box(
 		[]string{
 			"",
 			"  #" + strconv.Itoa(block.Height+1),
+			"",
+			"  next",
+			"  block",
 		},
 		0, 0, termbox.ColorRed,
 	)
@@ -90,7 +153,7 @@ func draw() {
 	group := tui.Group{}
 	for i, block := range state.Blocks {
 		if i == 0 { // draw unconfirmed block
-			group = append(group, unconfirmedBlockBox(block))
+			group = append(group, nextBlockBox(block))
 		}
 
 		group = append(group, blockBox(block, i+1))

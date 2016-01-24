@@ -32,7 +32,7 @@ func main() {
 	flag.Parse()
 
 	api.ApiURL = apiURL
-	api.UserAgent = "be"
+	api.UserAgent = "eb"
 
 	if help {
 		flag.PrintDefaults()
