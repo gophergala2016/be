@@ -50,8 +50,14 @@ func box(lines []string, x, y int, background termbox.Attribute) tui.Box {
 
 func horizontalLine(x, y int) tui.Box {
 	line := ""
-	for i := 0; i < xSpace; i++ {
+	if y%2 != 0 {
+		line = line + "<"
+	}
+	for i := 0; i < xSpace-1; i++ {
 		line = line + "─"
+	}
+	if y%2 == 0 {
+		line = line + ">"
 	}
 
 	return tui.Box{
@@ -65,9 +71,10 @@ func horizontalLine(x, y int) tui.Box {
 
 func verticalLine(x, y int) tui.Box {
 	lines := []string{}
-	for i := 0; i < ySpace; i++ {
+	for i := 0; i < ySpace-1; i++ {
 		lines = append(lines, "│")
 	}
+	lines = append(lines, "v")
 
 	return tui.Box{
 		Lines: lines,
