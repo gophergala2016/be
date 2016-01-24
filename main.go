@@ -20,6 +20,7 @@ func main() {
 		address     string
 		apiURL      string
 		help        bool
+		tui         bool
 	)
 
 	flag.StringVar(&block, "b", "", "Inspect Block")
@@ -27,6 +28,7 @@ func main() {
 	flag.StringVar(&address, "a", "", "Get Address info")
 	flag.StringVar(&apiURL, "u", api.ApiURL, "API URL")
 	flag.BoolVar(&help, "h", false, "Print Help")
+	flag.BoolVar(&tui, "ui", false, "tui tui tuiii")
 	flag.Parse()
 
 	api.ApiURL = apiURL
