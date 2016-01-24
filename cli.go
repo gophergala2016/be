@@ -9,6 +9,8 @@ import (
 	api "github.com/gophergala2016/be/insightapi"
 )
 
+var dateTimeFormat = "2006-01-02 15:04:05"
+
 func cliLatestBlocks() {
 	var miner string
 
@@ -23,7 +25,7 @@ func cliLatestBlocks() {
 			log.Fatal(err)
 		}
 		blockDatetime := time.Unix(int64(blockDatetimeUnix), 0)
-		blockDatetimeHuman := blockDatetime.Format("2006-01-02 15:04:05")
+		blockDatetimeHuman := blockDatetime.Format(dateTimeFormat)
 		if b.PoolInfo.PoolName != "" {
 			miner = "[" + b.PoolInfo.PoolName + "]"
 		} else {
@@ -52,7 +54,7 @@ func cliBlock(block string) {
 	}
 
 	blockDatetime := time.Unix(b.Time, 0)
-	blockDatetimeHuman := blockDatetime.Format("2006-01-02 15:04:05")
+	blockDatetimeHuman := blockDatetime.Format(dateTimeFormat)
 	size := b.Size / 1024
 
 	fmt.Printf("Block #%d\n-------------\n", b.Height)
@@ -82,9 +84,9 @@ func cliTransaction(transaction string) {
 	}
 
 	receivedDatetime := time.Unix(tx.Blocktime, 0)
-	receivedDatetimeHuman := receivedDatetime.Format("2006-01-02 15:04:05")
+	receivedDatetimeHuman := receivedDatetime.Format(dateTimeFormat)
 	minedDatetime := time.Unix(tx.Time, 0)
-	minedDatetimeHuman := minedDatetime.Format("2006-01-02 15:04:05")
+	minedDatetimeHuman := minedDatetime.Format(dateTimeFormat)
 
 	fmt.Printf("Transaction ID: %s\n", tx.Txid)
 	fmt.Printf("Received Time: %s\n", receivedDatetimeHuman)
