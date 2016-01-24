@@ -46,6 +46,19 @@ func GetLatestBlocks() (blocklist BlockList, err error) {
 		return
 	}
 	err = json.Unmarshal(bytes, &blocklist)
+
+	// sometimes the api sends duplicated blocks
+	blocks := blocklist.Blocks
+	blocksUnique := []BlockInfo{}
+	var lastHash string
+	for _, b := range blocks {
+		if b.Hash != lastHash {
+			blocksUnique = append(blocksUnique, b)
+			lastHash = b.Hash
+		}
+	}
+	blocklist.Blocks = blocksUnique
+
 	return
 }
 
