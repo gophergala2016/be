@@ -35,15 +35,19 @@ type BlockInfo struct {
 }
 
 type Tx struct {
-	Txid     string
-	Version  int
-	Locktime int
-	Vin      []Input
-	Vout     []Output
-	Size     int
-	ValueIn  float32
-	ValueOut float32
-	Fees     float32
+	Txid          string
+	Blockhash     string
+	Confirmations int
+	Time          int64
+	Blocktime     int64
+	Version       int
+	Locktime      int
+	Vin           []Input
+	Vout          []Output
+	Size          int
+	ValueIn       float32
+	ValueOut      float32
+	Fees          float32
 }
 
 type Input struct {

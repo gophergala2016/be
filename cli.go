@@ -39,11 +39,13 @@ func cliBlock(block string) {
 	if err != nil {
 		log.Fatal(err)
 	}
+
 	blockDatetime := time.Unix(b.Time, 0)
 	blockDatetimeHuman := blockDatetime.Format("2006-01-02 15:04:05")
 	size := b.Size / 1024
 
 	fmt.Printf("Block #%d\n-------------\n", b.Height)
+	fmt.Printf("Confirmations: %d\n", b.Confirmations)
 	fmt.Printf("Number Of Transactions: %d\n", len(b.Tx))
 	fmt.Printf("Height: %d\n", b.Height)
 	fmt.Printf("Block Reward: %f\n", b.Reward)
@@ -68,11 +70,20 @@ func cliTransaction(transaction string) {
 		log.Fatal(err)
 	}
 
+	receivedDatetime := time.Unix(tx.Blocktime, 0)
+	receivedDatetimeHuman := receivedDatetime.Format("2006-01-02 15:04:05")
+	minedDatetime := time.Unix(tx.Time, 0)
+	minedDatetimeHuman := minedDatetime.Format("2006-01-02 15:04:05")
+
 	fmt.Printf("Transaction ID: %s\n", tx.Txid)
+	fmt.Printf("Received Time: %s\n", receivedDatetimeHuman)
+	fmt.Printf("Mined Time: %s\n", minedDatetimeHuman)
 	fmt.Printf("Value Out: %f\n", tx.ValueOut)
 	fmt.Printf("Value In: %f\n", tx.ValueIn)
-	fmt.Printf("Size: %d\n", tx.Size)
+	fmt.Printf("Size (bytes): %d\n", tx.Size)
 	fmt.Printf("Fees: %f\n", tx.Fees)
+	fmt.Printf("Mined in block: %s\n", tx.Blockhash)
+	fmt.Printf("Confirmations: %d\n", tx.Confirmations)
 
 	fmt.Println("\nInputs:\n-------")
 	for _, i := range tx.Vin {
