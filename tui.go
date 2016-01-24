@@ -74,7 +74,7 @@ func verticalLine(x, y int) tui.Box {
 	for i := 0; i < ySpace-1; i++ {
 		lines = append(lines, "│")
 	}
-	lines = append(lines, "v")
+	lines = append(lines, "V")
 
 	return tui.Box{
 		Lines: lines,
