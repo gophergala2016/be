@@ -1,19 +1,21 @@
 # be (blockchain explorer)
 
-**be** is a Bitcoin Blockchain explorer for the terminal that uses the [Insight API](https://insight.is/) to get data from the Blockchain. By default it uses the Insight Live URL but in case you're running your own node, the URL can be defined by `-u <url>`
+**be** is a Bitcoin Blockchain explorer for the terminal that uses the [Insight API](https://insight.is/) to get data from the Blockchain. By default it uses the Insight Live URL but in case you're running your own node, the URL can be defined by `--api-url <url>`
+
+Both TUI and CLI modes are implemented. TUI is used by default, you can switch to CLI mode using the `--cli` parameter.
 
 ## Examples
 
-### UI mode
-
-```
-$ be -ui
-```
-
-### Watch Latest Blocks Mined
+### Watch latest blocks mined
 
 ```
 $ be
+```
+
+### Watch latest blocks mined (CLI mode)
+
+```
+$ be --cli
 #394785 (2016-01-24 12:31:12) 745txs 503Kb [Discus Fish]
 #394784 (2016-01-24 12:26:27) 1501txs 971Kb
 #394783 (2016-01-24 12:23:41) 1983txs 731Kb [Slush]
@@ -39,7 +41,7 @@ $ be
 ### Get Address info
 
 ```
-$ be -a 14gDc4MDLXAQJsfjZjptCpyLNnxVNhqdsP
+$ be --cli -a 14gDc4MDLXAQJsfjZjptCpyLNnxVNhqdsP
 Address: 14gDc4MDLXAQJsfjZjptCpyLNnxVNhqdsP
 Total Received: 0.00267301
 Total Sent: 0.00267301
@@ -82,7 +84,7 @@ e2ea68782c0667d5e538a84e5534d2b0ef53310ec409a58e2e9bdb4c2ef5e848
 ### Inspect Inputs and Outputs of a Transaction
 
 ```
-$ be -t 4b8f9d2f4a53eb2c8de6ea54ef538edef19031792c4e1bcf003bea4c01d3a1da
+$ be --cli -t 4b8f9d2f4a53eb2c8de6ea54ef538edef19031792c4e1bcf003bea4c01d3a1da
 Transaction ID: 4b8f9d2f4a53eb2c8de6ea54ef538edef19031792c4e1bcf003bea4c01d3a1da
 Received Time: 2016-01-23 17:04:16
 Mined Time: 2016-01-23 17:04:16
@@ -117,7 +119,7 @@ Outputs:
 ### Inspect Block
 
 ```
-$ be -b 0000000000000000016491fbaabd1db0a89a4a281c4a14c27e3ec56f20c8b2bb | head -n 20
+$ be --cli -b 0000000000000000016491fbaabd1db0a89a4a281c4a14c27e3ec56f20c8b2bb | head -n 20
 Block #394654
 -------------
 Confirmations: 132

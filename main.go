@@ -20,24 +20,19 @@ func main() {
 		address     string
 		apiURL      string
 		help        bool
-		tui         bool
+		cli         bool
 	)
 
-	flag.StringVar(&block, "b", "", "Inspect Block")
-	flag.StringVar(&transaction, "t", "", "Inspect Inputs and Outputs of a Transaction")
-	flag.StringVar(&address, "a", "", "Get Address info")
-	flag.StringVar(&apiURL, "u", api.ApiURL, "API URL")
+	flag.StringVar(&block, "b", "", "Block")
+	flag.StringVar(&transaction, "t", "", "Transaction")
+	flag.StringVar(&address, "a", "", "Address")
+	flag.StringVar(&apiURL, "api-url", api.ApiURL, "API URL")
 	flag.BoolVar(&help, "h", false, "Print Help")
-	flag.BoolVar(&tui, "ui", false, "tui tui tuiii")
+	flag.BoolVar(&cli, "cli", false, "CLI mode")
 	flag.Parse()
 
 	api.ApiURL = apiURL
 	api.UserAgent = "be"
-
-	if tui {
-		tuiLatestBlocks()
-		os.Exit(0)
-	}
 
 	if help {
 		flag.PrintDefaults()
@@ -45,7 +40,11 @@ func main() {
 	}
 
 	if block == "" && transaction == "" && address == "" {
-		cliLatestBlocks()
+		if !cli {
+			tuiLatestBlocks()
+		} else {
+			cliLatestBlocks()
+		}
 		os.Exit(0)
 	}
 
