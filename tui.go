@@ -13,6 +13,15 @@ var (
 	state api.BlockList
 )
 
+const (
+	boxWidth  = 15
+	boxHeight = 5
+	xMargin   = 2
+	yMargin   = 1
+	xSpace    = 2
+	ySpace    = 1
+)
+
 func tuiLatestBlocks() {
 	var err error
 	state, err = api.GetLatestBlocks()
@@ -33,8 +42,8 @@ func tuiLatestBlocks() {
 func box(lines []string, x, y int, background termbox.Attribute) tui.Box {
 	return tui.Box{
 		Lines: lines,
-		X:     2 + x*(15+2), Y: 1 + y*(5+1),
-		Width: 15, Height: 5,
+		X:     xMargin + x*(boxWidth+xSpace), Y: yMargin + y*(boxHeight+ySpace),
+		Width: boxWidth, Height: boxHeight,
 		Background: background, Foreground: termbox.ColorBlack,
 	}
 }
@@ -50,12 +59,9 @@ func calculateFit(pad, space, boxSize, containerSize int) (boxes int) {
 }
 
 func blockBox(block api.BlockInfo, i int) tui.Box {
-	xPad := 2
-	xSpace := 3
-	boxWidth := 15
 	containerWidth, _ := termbox.Size()
 
-	xBoxes := calculateFit(xPad, xSpace, boxWidth, containerWidth)
+	xBoxes := calculateFit(xMargin, xSpace, boxWidth, containerWidth)
 
 	return box(
 		[]string{
