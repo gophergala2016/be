@@ -2,6 +2,7 @@ package insightapi
 
 import (
 	"encoding/json"
+	"errors"
 	"io/ioutil"
 	"net/http"
 )
@@ -26,6 +27,11 @@ func GetResponse(url string) (bytes []byte, err error) {
 	}
 	defer resp.Body.Close()
 
+	if resp.StatusCode != 200 {
+		err = errors.New("Error: " + resp.Status)
+		return
+	}
+
 	bytes, err = ioutil.ReadAll(resp.Body)
 	if err != nil {
 		return
@@ -35,17 +41,21 @@ func GetResponse(url string) (bytes []byte, err error) {
 
 func GetLatestBlocks() (blocklist BlockList, err error) {
 	url := ApiURL + "/blocks"
-	if bytes, err := GetResponse(url); err == nil {
-		err = json.Unmarshal(bytes, &blocklist)
+	bytes, err := GetResponse(url)
+	if err != nil {
+		return
 	}
+	err = json.Unmarshal(bytes, &blocklist)
 	return
 }
 
 func GetBlockByHash(blockHash string) (block Block, err error) {
 	url := ApiURL + "/block/" + blockHash
-	if bytes, err := GetResponse(url); err == nil {
-		err = json.Unmarshal(bytes, &block)
+	bytes, err := GetResponse(url)
+	if err != nil {
+		return
 	}
+	err = json.Unmarshal(bytes, &block)
 	return
 }
 
@@ -64,16 +74,20 @@ func GetBlockByHeight(blockHeight string) (block Block, err error) {
 
 func GetTx(txId string) (tx Tx, err error) {
 	url := ApiURL + "/tx/" + txId
-	if bytes, err := GetResponse(url); err == nil {
-		err = json.Unmarshal(bytes, &tx)
+	bytes, err := GetResponse(url)
+	if err != nil {
+		return
 	}
+	err = json.Unmarshal(bytes, &tx)
 	return
 }
 
 func GetAddr(addrStr string) (addr Addr, err error) {
 	url := ApiURL + "/addr/" + addrStr
-	if bytes, err := GetResponse(url); err == nil {
-		err = json.Unmarshal(bytes, &addr)
+	bytes, err := GetResponse(url)
+	if err != nil {
+		return
 	}
+	err = json.Unmarshal(bytes, &addr)
 	return
 }
