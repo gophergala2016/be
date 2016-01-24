@@ -34,6 +34,11 @@ func main() {
 	api.ApiURL = apiURL
 	api.UserAgent = "be"
 
+	if tui {
+		tuiLatestBlocks()
+		os.Exit(0)
+	}
+
 	if help {
 		flag.PrintDefaults()
 		os.Exit(0)
