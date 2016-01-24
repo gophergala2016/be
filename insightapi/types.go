@@ -10,7 +10,7 @@ type Block struct {
 	Version       int
 	Merkleroot    string
 	Tx            []string
-	Time          int
+	Time          int64
 	Nonce         int
 	Bits          string
 	Difficulty    float64

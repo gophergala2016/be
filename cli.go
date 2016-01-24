@@ -3,19 +3,34 @@ package main
 import (
 	"fmt"
 	"log"
+	"strconv"
+	"time"
 
 	api "github.com/gophergala2016/be/insightapi"
 )
 
 func cliLatestBlocks() {
-	latestBlocks, err := api.GetLatestBlocks()
+	var miner string
 
+	latestBlocks, err := api.GetLatestBlocks()
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	for _, b := range latestBlocks.Blocks[0:20] {
-		fmt.Println(b.Height, b.Hash, b.Time, b.Txlength, b.PoolInfo.PoolName, b.Size)
+		blockDatetimeUnix, _ := strconv.Atoi(b.Time)
+		if err != nil {
+			log.Fatal(err)
+		}
+		blockDatetime := time.Unix(int64(blockDatetimeUnix), 0)
+		blockDatetimeHuman := blockDatetime.Format("2006-01-02 15:04:05")
+		if b.PoolInfo.PoolName != "" {
+			miner = "[" + b.PoolInfo.PoolName + "]"
+		} else {
+			miner = ""
+		}
+		size := b.Size / 1024
+		fmt.Printf("#%d (%s) %dtxs %dKb %s\n", b.Height, blockDatetimeHuman, b.Txlength, size, miner)
 	}
 }
 
@@ -24,16 +39,21 @@ func cliBlock(block string) {
 	if err != nil {
 		log.Fatal(err)
 	}
+	blockDatetime := time.Unix(b.Time, 0)
+	blockDatetimeHuman := blockDatetime.Format("2006-01-02 15:04:05")
+	size := b.Size / 1024
 
 	fmt.Printf("Block #%d\n-------------\n", b.Height)
 	fmt.Printf("Number Of Transactions: %d\n", len(b.Tx))
 	fmt.Printf("Height: %d\n", b.Height)
 	fmt.Printf("Block Reward: %f\n", b.Reward)
-	fmt.Printf("Timestamp: %d\n", b.Time)
-	fmt.Printf("Mined by: %s\n", b.PoolInfo.PoolName)
+	fmt.Printf("Timestamp: %s\n", blockDatetimeHuman)
+	if b.PoolInfo.PoolName != "" {
+		fmt.Printf("Mined by: %s\n", b.PoolInfo.PoolName)
+	}
 	fmt.Printf("Merkle Root: %s\n", b.Merkleroot)
 	fmt.Printf("Difficulty: %f\n", b.Difficulty)
-	fmt.Printf("Size (bytes): %d\n", b.Size)
+	fmt.Printf("Size (Kilobytes): %d\n", size)
 	fmt.Printf("Nonce: %d\n", b.Nonce)
 
 	fmt.Println("\nTransactions:\n-------------")
