@@ -4,6 +4,20 @@
 
 Both TUI and CLI modes are implemented. TUI is used by default, you can switch to CLI mode using the `--cli` parameter.
 
+## What is a blockchain explorer?
+
+In the Bitcoin network, all new data about bitcoin addresses and transactions
+is periodically archived into immutable blocks, which build on top of the
+previous block that was archived. This distributed chain of blocks is known as
+the blockchain. You can think of it as a Git repository for money.
+
+A [blockchain explorer](https://en.bitcoin.it/wiki/Block_chain_browser) is a
+tool that allows you to inspect the status of the blockchain and obtain
+information about any block, address or transaction that took place in the
+Bitcoin network. **be** is a blockchain explorer for the terminal, which uses
+Insight's API; [Insight](https://insight.bitpay.com/) is a web blockchain
+explorer.
+
 ## Examples
 
 ### Watch latest blocks mined
@@ -11,6 +25,9 @@ Both TUI and CLI modes are implemented. TUI is used by default, you can switch t
 ```
 $ be
 ```
+
+Use the arrow keys to move between blocks, press Enter to examine a block (as
+in `be -b <height>`) and press Q to exit.
 
 ![be screenshot](https://raw.github.com/gophergala2016/be/master/img/be_screenshot.jpg)
 
@@ -124,7 +141,7 @@ Outputs:
 
 ### Block (CLI mode)
 
-Inspect blocks, including number of confirmations, list of transactions, size, block reward, height and miner.
+Inspect blocks, including number of confirmations, list of transactions, size, block reward, height and miner. Takes either block hash or height as arguments.
 
 ```
 $ be --cli -b 0000000000000000016491fbaabd1db0a89a4a281c4a14c27e3ec56f20c8b2bb | head -n 20
