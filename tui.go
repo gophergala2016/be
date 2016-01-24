@@ -2,6 +2,7 @@ package main
 
 import (
 	"log"
+	"os"
 	"strconv"
 
 	api "github.com/gophergala2016/be/insightapi"
@@ -10,7 +11,11 @@ import (
 )
 
 var (
-	state api.BlockList
+	state        api.BlockList
+	selected     int
+	screenWidth  int
+	screenHeight int
+	screenScroll int
 )
 
 const (
@@ -35,16 +40,23 @@ func tuiLatestBlocks() {
 	}
 	defer termbox.Close()
 
+	selected = 1
+	screenWidth, screenHeight = termbox.Size()
+	screenScroll = 0
+
 	draw()
 	tuiPoll()
+	termbox.Close()
+	cliBlock(state.Blocks[selected-1].Hash)
+	os.Exit(0)
 }
 
-func box(lines []string, x, y int, background termbox.Attribute) tui.Box {
+func box(lines []string, x, y int, background, foreground termbox.Attribute) tui.Box {
 	return tui.Box{
 		Lines: lines,
-		X:     xMargin + x*(boxWidth+xSpace), Y: yMargin + y*(boxHeight+ySpace),
+		X:     xMargin + x*(boxWidth+xSpace), Y: yMargin + (y-screenScroll)*(boxHeight+ySpace),
 		Width: boxWidth, Height: boxHeight,
-		Background: background, Foreground: termbox.ColorBlack,
+		Background: background, Foreground: foreground,
 	}
 }
 
@@ -63,7 +75,7 @@ func horizontalLine(x, y int) tui.Box {
 	return tui.Box{
 		Lines: []string{line},
 		X:     xMargin + boxWidth + (xSpace+boxWidth)*x,
-		Y:     yMargin + boxHeight/2 + (ySpace+boxHeight)*y,
+		Y:     yMargin + boxHeight/2 + (ySpace+boxHeight)*(y-screenScroll),
 		Width: xSpace, Height: 1,
 		Foreground: termbox.ColorWhite,
 	}
@@ -79,7 +91,7 @@ func verticalLine(x, y int) tui.Box {
 	return tui.Box{
 		Lines: lines,
 		X:     xMargin + boxWidth/2 + (xSpace+boxWidth)*x,
-		Y:     yMargin + boxHeight + (ySpace+boxHeight)*y,
+		Y:     yMargin + boxHeight + (ySpace+boxHeight)*(y-screenScroll),
 		Width: 1, Height: ySpace,
 		Foreground: termbox.ColorWhite,
 	}
@@ -95,19 +107,44 @@ func calculateFit(pad, space, boxSize, containerSize int) (boxes int) {
 	}
 }
 
-func blockBox(block api.BlockInfo, i int) tui.Group {
-	containerWidth, _ := termbox.Size()
+func calculateXFit() int {
+	x := calculateFit(xMargin, xSpace, boxWidth, screenWidth)
+	if x < 1 {
+		x = 1
+	}
+	return x
+}
 
-	xBoxes := calculateFit(xMargin, xSpace, boxWidth, containerWidth)
+func calculateYFit() int {
+	x := calculateFit(yMargin, ySpace, boxHeight, screenHeight)
+	if x < 1 {
+		x = 1
+	}
+	return x
+}
 
-	y := i / xBoxes
+func toSnake(i int) (x, y int) {
+	xBoxes := calculateXFit()
 
-	var x int
+	y = i / xBoxes
 
 	if y%2 == 0 {
 		x = i % xBoxes
 	} else {
 		x = xBoxes - 1 - (i % xBoxes)
+	}
+
+	return
+}
+
+func blockBox(block api.BlockInfo, i int) tui.Group {
+	xBoxes := calculateXFit()
+
+	x, y := toSnake(i)
+
+	color := termbox.ColorBlack
+	if i == selected {
+		color = termbox.ColorWhite
 	}
 
 	box := box(
@@ -119,7 +156,7 @@ func blockBox(block api.BlockInfo, i int) tui.Group {
 			"  " + strconv.Itoa(block.Size/1024) + " kb",
 			"  " + block.PoolInfo.PoolName,
 		},
-		x, y, termbox.ColorBlue,
+		x, y, termbox.ColorBlue, color,
 	)
 
 	var line tui.Drawable
@@ -150,7 +187,7 @@ func nextBlockBox(block api.BlockInfo) tui.Box {
 			"  next",
 			"  block",
 		},
-		0, 0, termbox.ColorRed,
+		0, 0, termbox.ColorRed, termbox.ColorBlack,
 	)
 }
 
@@ -170,16 +207,50 @@ func draw() {
 	canvas.Redraw()
 }
 
+func move(x int) {
+	selected = selected + x
+	if selected < 1 {
+		selected = 1
+	}
+	if selected > len(state.Blocks) {
+		selected = len(state.Blocks)
+	}
+	for _, y := toSnake(selected); y+1 > calculateYFit()+screenScroll; {
+		screenScroll = screenScroll + 1
+	}
+	for _, y := toSnake(selected); y < screenScroll; {
+		screenScroll = screenScroll - 1
+	}
+	draw()
+}
+
 func tuiPoll() {
 	for {
 		e := termbox.PollEvent()
 
 		if e.Type == termbox.EventKey {
-			return
+			switch e.Key {
+			case termbox.KeyArrowLeft:
+				move(-1)
+			case termbox.KeyArrowUp:
+				move(-1)
+			case termbox.KeyArrowRight:
+				move(1)
+			case termbox.KeyArrowDown:
+				move(1)
+			case termbox.KeyEnter:
+				return
+			default:
+				termbox.Close()
+				os.Exit(0)
+			}
 		}
 
 		if e.Type == termbox.EventResize {
+			screenWidth = e.Width
+			screenHeight = e.Height
 			draw()
+			move(0)
 		}
 	}
 }
