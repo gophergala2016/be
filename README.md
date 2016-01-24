@@ -18,7 +18,7 @@ Bitcoin network. **be** is a blockchain explorer for the terminal, which uses
 Insight's API; [Insight](https://insight.bitpay.com/) is a web blockchain
 explorer.
 
-## Examples
+## Use
 
 ### Watch latest blocks mined
 
@@ -165,6 +165,21 @@ Transactions:
 6238d611e4d2a69b49ae06f96bc2b7e5aa52469220b0e1ec4b86b20a60b34acf
 bbd5909dd1bbd4494d89aa82f5799a85ea5704634c001fa7516bf9b04b44a117
 93d23a3b566fa81f59ccdb5d28068ec6a40a81a48fae7235997e9e58f574e00d
+```
+
+## Install
+
+Install in your `$GOPATH/bin`:
+
+```
+go get -u github.com/gophergala2016/be
+```
+
+Using Docker:
+
+```
+$ make container
+$ docker run --rm -it be
 ```
 
 ## TODO

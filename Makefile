@@ -1,8 +1,8 @@
 build: clean
-	go build
+	go build -o bin/be
 
 clean:
-	rm -f be
+	rm -rf bin
 
 container:
 	docker build -t be .
