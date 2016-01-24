@@ -28,7 +28,7 @@ func GetLatestBlocks() (blocklist BlockList, err error) {
 	return
 }
 
-func GetBlock(blockHash string) (block Block, err error) {
+func GetBlockByHash(blockHash string) (block Block, err error) {
 	url := ApiURL + "/block/" + blockHash
 
 	resp, err := http.Get(url)
@@ -42,6 +42,26 @@ func GetBlock(blockHash string) (block Block, err error) {
 	}
 
 	err = json.Unmarshal(bytes, &block)
+	return
+}
+
+func GetBlockByHeight(blockHeight string) (block Block, err error) {
+	url := ApiURL + "/block-index/" + blockHeight
+
+	resp, err := http.Get(url)
+	if err != nil {
+		return
+	}
+
+	bytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return
+	}
+
+	var blockIndex BlockIndex
+	err = json.Unmarshal(bytes, &blockIndex)
+	hash := blockIndex.BlockHash
+	block, err = GetBlockByHash(hash)
 	return
 }
 

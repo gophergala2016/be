@@ -35,9 +35,20 @@ func cliLatestBlocks() {
 }
 
 func cliBlock(block string) {
-	b, err := api.GetBlock(block)
-	if err != nil {
-		log.Fatal(err)
+	var b api.Block
+	var err error
+
+	// check if user provided height or hash
+	if len(block) == 64 {
+		b, err = api.GetBlockByHash(block)
+		if err != nil {
+			log.Fatal(err)
+		}
+	} else {
+		b, err = api.GetBlockByHeight(block)
+		if err != nil {
+			log.Fatal(err)
+		}
 	}
 
 	blockDatetime := time.Unix(b.Time, 0)

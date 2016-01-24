@@ -21,6 +21,10 @@ type Block struct {
 	PoolInfo      PoolInfo
 }
 
+type BlockIndex struct {
+	BlockHash string
+}
+
 type BlockList struct {
 	Blocks []BlockInfo
 }
