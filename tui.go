@@ -230,17 +230,9 @@ func tuiPoll() {
 
 		if e.Type == termbox.EventKey {
 			switch e.Key {
-			case termbox.KeyArrowLeft:
+			case termbox.KeyArrowLeft, termbox.KeyArrowUp, termbox.KeyPgup:
 				move(-1)
-			case termbox.KeyArrowUp:
-				move(-1)
-			case termbox.KeyPgup:
-				move(-1)
-			case termbox.KeyArrowRight:
-				move(1)
-			case termbox.KeyArrowDown:
-				move(1)
-			case termbox.KeyPgdn:
+			case termbox.KeyArrowRight, termbox.KeyArrowDown, termbox.KeyPgdn:
 				move(1)
 			case termbox.KeyEnter:
 				return
