@@ -12,6 +12,8 @@ Both TUI and CLI modes are implemented. TUI is used by default, you can switch t
 $ be
 ```
 
+![be screenshot](https://raw.github.com/gophergala2016/be/master/img/be_screenshot.jpg)
+
 ### Watch latest blocks mined (CLI mode)
 
 ```
