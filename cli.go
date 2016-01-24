@@ -100,7 +100,10 @@ func cliTransaction(transaction string) {
 
 	fmt.Println("\nInputs:\n-------")
 	for _, i := range tx.Vin {
-		fmt.Println(i.Addr, formatBtc(i.Value))
+		// print only if not coinbase transaction
+		if i.Coinbase == "" {
+			fmt.Println(i.Addr, formatBtc(i.Value))
+		}
 	}
 
 	fmt.Println("\nOutputs:\n--------")

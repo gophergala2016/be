@@ -57,6 +57,7 @@ type Tx struct {
 type Input struct {
 	Txid             string
 	Vout             int
+	Coinbase         string
 	Sequence         int
 	N                int
 	Addr             string
