@@ -9,8 +9,13 @@ import (
 	"github.com/nsf/termbox-go"
 )
 
+var (
+	state api.BlockList
+)
+
 func tuiLatestBlocks() {
-	latestBlocks, err := api.GetLatestBlocks()
+	var err error
+	state, err = api.GetLatestBlocks()
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -21,46 +26,58 @@ func tuiLatestBlocks() {
 	}
 	defer termbox.Close()
 
+	draw()
+	tuiPoll()
+}
+
+func box(lines []string, x, y int, background termbox.Attribute) tui.Box {
+	return tui.Box{
+		Lines: lines,
+		X:     1 + x*18, Y: 1 + y*8,
+		Width: 15, Height: 5,
+		Background: background, Foreground: termbox.ColorBlack,
+	}
+}
+
+func blockBox(block api.BlockInfo, i int) tui.Box {
+	return box(
+		[]string{
+			"",
+			"  #" + strconv.Itoa(block.Height),
+			"  " + strconv.Itoa(block.Txlength) + "txs",
+			"  " + strconv.Itoa(block.Size/1024) + "kb",
+		},
+		i+1, 0, termbox.ColorBlue,
+	)
+}
+
+func unconfirmedBlockBox(block api.BlockInfo) tui.Box {
+	return box(
+		[]string{
+			"",
+			"  #" + strconv.Itoa(block.Height+1),
+		},
+		0, 0, termbox.ColorRed,
+	)
+}
+
+func draw() {
 	canvas := tui.Canvas{}
 
 	group := tui.Group{}
-	for i, block := range latestBlocks.Blocks {
+	for i, block := range state.Blocks {
 		if i == 0 { // draw unconfirmed block
-			box := tui.Box{
-				Lines: []string{
-					"",
-					"  #" + strconv.Itoa(block.Height+1),
-				},
-				X: 1 + i*18, Y: 1,
-				Width: 15, Height: 5,
-				Background: termbox.ColorRed, Foreground: termbox.ColorBlack,
-			}
-
-			group = append(group, box)
+			group = append(group, unconfirmedBlockBox(block))
 		}
 
-		box := tui.Box{
-			Lines: []string{
-				"",
-				"  #" + strconv.Itoa(block.Height),
-				"  " + strconv.Itoa(block.Txlength) + "txs",
-				"  " + strconv.Itoa(block.Size/1024) + "kb",
-			},
-			X: 1 + (i+1)*18, Y: 1,
-			Width: 15, Height: 5,
-			Background: termbox.ColorBlue, Foreground: termbox.ColorBlack,
-		}
-
-		group = append(group, box)
+		group = append(group, blockBox(block, i))
 	}
 
 	canvas.Drawable = group
 	canvas.Redraw()
-
-	tuiPoll(canvas)
 }
 
-func tuiPoll(canvas tui.Canvas) {
+func tuiPoll() {
 	for {
 		e := termbox.PollEvent()
 
@@ -69,7 +86,7 @@ func tuiPoll(canvas tui.Canvas) {
 		}
 
 		if e.Type == termbox.EventResize {
-			canvas.Redraw()
+			draw()
 		}
 	}
 }
