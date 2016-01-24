@@ -33,13 +33,30 @@ func tuiLatestBlocks() {
 func box(lines []string, x, y int, background termbox.Attribute) tui.Box {
 	return tui.Box{
 		Lines: lines,
-		X:     1 + x*18, Y: 1 + y*8,
+		X:     2 + x*(15+2), Y: 1 + y*(5+1),
 		Width: 15, Height: 5,
 		Background: background, Foreground: termbox.ColorBlack,
 	}
 }
 
+func calculateFit(pad, space, boxSize, containerSize int) (boxes int) {
+	for {
+		if pad+boxSize*(boxes+1)+space*boxes+pad > containerSize {
+			return
+		}
+
+		boxes = boxes + 1
+	}
+}
+
 func blockBox(block api.BlockInfo, i int) tui.Box {
+	xPad := 2
+	xSpace := 3
+	boxWidth := 15
+	containerWidth, _ := termbox.Size()
+
+	xBoxes := calculateFit(xPad, xSpace, boxWidth, containerWidth)
+
 	return box(
 		[]string{
 			"",
@@ -47,7 +64,7 @@ func blockBox(block api.BlockInfo, i int) tui.Box {
 			"  " + strconv.Itoa(block.Txlength) + "txs",
 			"  " + strconv.Itoa(block.Size/1024) + "kb",
 		},
-		i+1, 0, termbox.ColorBlue,
+		i%xBoxes, i/xBoxes, termbox.ColorBlue,
 	)
 }
 
@@ -70,7 +87,7 @@ func draw() {
 			group = append(group, unconfirmedBlockBox(block))
 		}
 
-		group = append(group, blockBox(block, i))
+		group = append(group, blockBox(block, i+1))
 	}
 
 	canvas.Drawable = group
