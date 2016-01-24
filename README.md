@@ -38,7 +38,9 @@ $ be --cli
 #394766 (2016-01-24 09:48:33) 353txs 216Kb
 ```
 
-### Get Address info
+### Address (CLI mode)
+
+Get address information, including balance, amount sent, amount received and transaction list.
 
 ```
 $ be --cli -a 14gDc4MDLXAQJsfjZjptCpyLNnxVNhqdsP
@@ -81,7 +83,9 @@ ccb0d95261fac76e78e5cc4257e9a4724f8d65a0933430a66e26fa998ad7590a
 e2ea68782c0667d5e538a84e5534d2b0ef53310ec409a58e2e9bdb4c2ef5e848
 ```
 
-### Inspect Inputs and Outputs of a Transaction
+### Transaction (CLI mode)
+
+Inspect a transaction, including inputs, outputs, confirmations, block hash, value in and value out.
 
 ```
 $ be --cli -t 4b8f9d2f4a53eb2c8de6ea54ef538edef19031792c4e1bcf003bea4c01d3a1da
@@ -116,7 +120,9 @@ Outputs:
 1H6YbozjMSaARR2AHTSkNyC6S63S4LD2JB 0.00162000
 ```
 
-### Inspect Block
+### Block (CLI mode)
+
+Inspect blocks, including number of confirmations, list of transactions, size, block reward, height and miner.
 
 ```
 $ be --cli -b 0000000000000000016491fbaabd1db0a89a4a281c4a14c27e3ec56f20c8b2bb | head -n 20
